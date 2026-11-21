@@ -28,3 +28,12 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## SkillBridge architecture
+
+- Scoring, ordering, weekly-fill and re-balance rules live as pure functions in `src/lib/skillbridge.ts` with tests beside them; UI and I/O call them, never re-implement them — keeps the rules testable in one place.
+- Signed-in pages live under `src/routes/_authenticated/` and read everything through the single `appDataQuery` (`src/lib/app-data.ts`) using the browser client with RLS; mutations invalidate that one query — one source of truth for derived views.
+- `verifications` rows are written only by the `verifyRepo` server function with the admin client after it checks GitHub; students have read-only access — prevents self-verification.
+- Public profiles (`/u/$username`) read only through the `get_public_profile` SECURITY DEFINER function, which returns verified data only — no anon access to tables.
+- The demo account is created/seeded on demand by the public `ensureDemoAccount` server function, which only touches the fixed demo user — auth users can't be seeded from migrations.
+- GitHub calls are unauthenticated by default; an optional `GITHUB_TOKEN` secret raises the rate limit.
