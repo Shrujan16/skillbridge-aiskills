@@ -1,11 +1,21 @@
 import { Link, Outlet, useNavigate } from "@tanstack/react-router";
-import { useQueryClient } from "@tanstack/react-query";
-import { CalendarDays, FolderGit2, LayoutDashboard, LogOut, Map, UserRound } from "lucide-react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { CalendarDays, ChevronDown, ExternalLink, FolderGit2, LayoutDashboard, LogOut, Map, UserRound } from "lucide-react";
 import { Suspense } from "react";
 import { Logo } from "./Logo";
+import { ThemeToggle } from "./ThemeToggle";
 import { PageSkeleton } from "./states";
-import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { supabase } from "@/integrations/supabase/client";
+import { appDataQuery } from "@/lib/app-data";
 
 const NAV = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -15,9 +25,23 @@ const NAV = [
   { to: "/profile", label: "Profile", icon: UserRound },
 ] as const;
 
+function initials(name: string) {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0]!.toUpperCase())
+    .join("") || "SB";
+}
+
 export function AppShell() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  // Non-suspending read so the shell renders immediately; pages suspend on their own.
+  const { data } = useQuery(appDataQuery);
+  const profile = data?.profile ?? null;
+  const roleName = data?.roles.find((r) => r.id === profile?.target_role_id)?.name ?? null;
+  const displayName = profile?.name || data?.user.email || "Student";
 
   async function signOut() {
     await queryClient.cancelQueries();
@@ -27,29 +51,88 @@ export function AppShell() {
   }
 
   return (
-    <div className="min-h-screen pb-24 md:pb-10">
-      <header className="sticky top-0 z-30 border-b bg-card/85 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
+    <div className="min-h-screen md:pl-60">
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-60 flex-col border-r bg-sidebar md:flex">
+        <div className="flex h-14 items-center border-b px-4">
           <Logo to="/dashboard" />
-          <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
-            {NAV.map((n) => (
-              <Link
-                key={n.to}
-                to={n.to}
-                className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                activeProps={{ className: "bg-primary-soft text-primary hover:bg-primary-soft hover:text-primary" }}
-              >
-                {n.label}
-              </Link>
-            ))}
-          </nav>
-          <Button variant="ghost" size="sm" onClick={signOut} aria-label="Sign out">
-            <LogOut /> <span className="hidden sm:inline">Sign out</span>
-          </Button>
+        </div>
+        <nav className="flex-1 space-y-0.5 p-2" aria-label="Main">
+          <p className="px-2.5 pb-1.5 pt-3 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Workspace</p>
+          {NAV.map((n) => (
+            <Link
+              key={n.to}
+              to={n.to}
+              className="flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-sm font-medium text-sidebar-foreground transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+              activeProps={{ className: "bg-sidebar-accent text-sidebar-accent-foreground [&_svg]:text-primary" }}
+            >
+              <n.icon className="size-4 text-muted-foreground" />
+              {n.label}
+            </Link>
+          ))}
+        </nav>
+        {roleName && (
+          <div className="border-t p-3">
+            <div className="rounded-md border bg-background px-3 py-2">
+              <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Target role</p>
+              <p className="mt-0.5 truncate text-sm font-medium">{roleName}</p>
+            </div>
+          </div>
+        )}
+      </aside>
+
+      <header className="sticky top-0 z-20 border-b bg-card/85 backdrop-blur">
+        <div className="flex h-14 items-center justify-between gap-3 px-4 sm:px-6">
+          <div className="flex min-w-0 items-center gap-3">
+            <span className="md:hidden">
+              <Logo to="/dashboard" />
+            </span>
+            {roleName && (
+              <span className="hidden min-w-0 items-center gap-2 text-sm sm:flex">
+                <span className="hidden text-muted-foreground md:inline">Track</span>
+                <span className="hidden text-muted-foreground md:inline">/</span>
+                <span className="truncate rounded-md border bg-background px-2 py-0.5 font-mono text-xs">{roleName}</span>
+              </span>
+            )}
+          </div>
+          <div className="flex items-center gap-1">
+            <ThemeToggle />
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center gap-2 rounded-md px-1.5 py-1 text-sm hover:bg-muted" aria-label="Account menu">
+                <Avatar className="size-7 rounded-md">
+                  <AvatarFallback className="rounded-md bg-primary-soft text-[11px] font-semibold text-primary">{initials(displayName)}</AvatarFallback>
+                </Avatar>
+                <span className="hidden max-w-36 truncate font-medium sm:inline">{displayName}</span>
+                <ChevronDown className="hidden size-3.5 text-muted-foreground sm:block" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel className="font-normal">
+                  <p className="truncate text-sm font-medium">{displayName}</p>
+                  {data?.user.email && <p className="truncate font-mono text-xs text-muted-foreground">{data.user.email}</p>}
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to="/profile">
+                    <UserRound /> Profile
+                  </Link>
+                </DropdownMenuItem>
+                {profile?.username && (
+                  <DropdownMenuItem asChild>
+                    <Link to="/u/$username" params={{ username: profile.username }}>
+                      <ExternalLink /> Public profile
+                    </Link>
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onSelect={() => void signOut()}>
+                  <LogOut /> Sign out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-4 py-6 sm:py-8">
+      <main className="mx-auto max-w-6xl px-4 pb-24 pt-6 sm:px-6 sm:pt-8 md:pb-12">
         <Suspense fallback={<PageSkeleton />}>
           <Outlet />
         </Suspense>
@@ -63,7 +146,7 @@ export function AppShell() {
           <Link
             key={n.to}
             to={n.to}
-            className="flex flex-col items-center gap-1 py-2.5 text-[11px] font-medium text-muted-foreground"
+            className="flex flex-col items-center gap-1 rounded-md py-2.5 text-[11px] font-medium text-muted-foreground"
             activeProps={{ className: "text-primary" }}
           >
             <n.icon className="size-5" />

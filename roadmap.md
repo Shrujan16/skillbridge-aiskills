@@ -1,5 +1,5 @@
 # SkillBridge roadmap
-- [x] Design system, landing page, auth (email + Google + Lovable, auto-confirm)
+- [x] Design system, landing page, auth (email + Google, auto-confirm)
 - [x] Role selection, assessment, readiness dashboard
 - [x] Roadmap, projects, profile
 - [x] Weekly planner with re-balance
@@ -7,3 +7,8 @@
 - [x] Public profile /u/:username + copy share link
 - [x] Demo account with sample data
 - [x] Tests for scoring and planner rules
+- [ ] Developer-product redesign: slate tokens, Inter + JetBrains Mono, 8px radius, dark mode toggle
+- [ ] App shell: desktop sidebar, top bar (role + user menu), mobile bottom tabs
+- [ ] Landing: score formula section, architecture strip, tech badges
+- [ ] Dashboard: 4 stat tiles, sortable skill table, restyled chart, no emojis
+- [ ] Role selection: 3 cards, locked cards visible with lock, Coming soon, example skills, toast

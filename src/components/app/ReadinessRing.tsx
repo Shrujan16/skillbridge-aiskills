@@ -15,7 +15,7 @@ export function ReadinessRing({ value, size = 200 }: { value: number; size?: num
               <stop offset="100%" stopColor="var(--accent)" />
             </linearGradient>
           </defs>
-          <Pie data={data} dataKey="value" innerRadius="74%" outerRadius="100%" startAngle={90} endAngle={-270} stroke="none" cornerRadius={value > 0 && value < 100 ? 10 : 0} isAnimationActive>
+          <Pie data={data} dataKey="value" innerRadius="74%" outerRadius="100%" startAngle={90} endAngle={-270} stroke="none" cornerRadius={value > 0 && value < 100 ? 4 : 0} isAnimationActive>
             <Cell fill="url(#ring-grad)" />
             <Cell fill="var(--primary-soft)" />
           </Pie>
@@ -23,8 +23,8 @@ export function ReadinessRing({ value, size = 200 }: { value: number; size?: num
       </ResponsiveContainer>
       <div className="absolute inset-0 grid place-items-center text-center">
         <div>
-          <div className="font-display text-4xl font-bold">{value}%</div>
-          <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Role ready</div>
+          <div className="num text-4xl font-semibold">{value}%</div>
+          <div className="font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Role ready</div>
         </div>
       </div>
     </div>
