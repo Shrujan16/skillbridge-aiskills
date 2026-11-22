@@ -1,6 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { LovableMark } from "@lovable.dev/cloud-auth-js/react";
 import { Loader2, Sparkles } from "lucide-react";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { toast } from "sonner";
@@ -48,6 +47,13 @@ function safeRedirect(r: string | undefined) {
   }
 }
 
+function friendlyOAuthError(message: string) {
+  if (/cancel|closed|access_denied|denied/i.test(message)) {
+    return "Sign-in was cancelled. You can try again or use your email and password.";
+  }
+  return "We couldn't sign you in with Google. Please try again or use your email and password.";
+}
+
 function GoogleLogo() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" style={{ width: 18, height: 18 }}>
@@ -67,13 +73,20 @@ function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [busy, setBusy] = useState<null | "form" | "demo" | "google" | "lovable">(null);
+  const [busy, setBusy] = useState<null | "form" | "demo" | "google">(null);
   const prepareDemo = useServerFn(ensureDemoAccount);
   const demoStarted = useRef(false);
 
   const go = () => navigate({ to: safeRedirect(search.redirect), replace: true });
 
   useEffect(() => {
+    // Friendly message when a provider sends the user back with an error (e.g. they cancelled).
+    const params = new URLSearchParams(window.location.search + "&" + window.location.hash.replace(/^#/, ""));
+    const oauthError = params.get("error");
+    if (oauthError) {
+      toast.error(friendlyOAuthError(oauthError + " " + (params.get("error_description") ?? "")));
+      window.history.replaceState(null, "", window.location.pathname);
+    }
     supabase.auth.getSession().then(({ data }) => {
       if (data.session && !search.demo) go();
     });
@@ -159,16 +172,22 @@ function AuthPage() {
     }
   }
 
-  async function social(provider: "google" | "lovable") {
+  async function social(provider: "google") {
     setBusy(provider);
-    const result = await lovable.auth.signInWithOAuth(provider, { redirect_uri: window.location.origin });
-    if (result.error) {
-      toast.error("Sign-in didn't complete. Please try again.");
+    try {
+      // Return to this public page; it forwards to the dashboard, which sends first-time users to onboarding.
+      const result = await lovable.auth.signInWithOAuth(provider, { redirect_uri: `${window.location.origin}/auth` });
+      if (result.error) {
+        toast.error(friendlyOAuthError(result.error.message));
+        setBusy(null);
+        return;
+      }
+      if (result.redirected) return;
+      go();
+    } catch (e) {
+      toast.error(friendlyOAuthError(e instanceof Error ? e.message : ""));
       setBusy(null);
-      return;
     }
-    if (result.redirected) return;
-    go();
   }
 
   const title = mode === "signup" ? "Create your account" : mode === "forgot" ? "Reset your password" : "Welcome back";
@@ -192,10 +211,6 @@ function AuthPage() {
               <Button type="button" variant="outline" size="lg" onClick={() => social("google")} disabled={busy !== null}>
                 {busy === "google" ? <Loader2 className="animate-spin" /> : <GoogleLogo />}
                 Continue with Google
-              </Button>
-              <Button type="button" variant="outline" size="lg" onClick={() => social("lovable")} disabled={busy !== null}>
-                {busy === "lovable" ? <Loader2 className="animate-spin" /> : <LovableMark />}
-                Continue with Lovable
               </Button>
               <div className="my-3 flex items-center gap-3 text-xs text-muted-foreground">
                 <span className="h-px flex-1 bg-border" /> or with email <span className="h-px flex-1 bg-border" />
