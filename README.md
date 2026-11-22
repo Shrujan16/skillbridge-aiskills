@@ -6,7 +6,7 @@ Built by **Team SMACKS** for **Prasunex Innovathon 2026** (Software Development 
 
 - **Live demo:** https://skillbridge-aiskills.lovable.app
 - **Demo video:** ADD-VIDEO-LINK-HERE
-- **Demo login:** `demo@skillbridge.app` / `Demo@12345`
+- **Demo login:** `1nc24cs033@ncetmail.com` / `Shrujan@8765`
 
 ---
 
