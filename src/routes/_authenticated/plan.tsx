@@ -171,8 +171,8 @@ function PlanPage() {
 
       <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
         <div className="surface-card col-span-2 p-4 lg:col-span-1">
-          <div className="flex items-center justify-between text-xs font-medium uppercase tracking-wider text-muted-foreground">
-            Plan progress <span className="font-display text-sm text-foreground">{pct}%</span>
+          <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
+            Plan progress <span className="num text-sm text-foreground">{pct}%</span>
           </div>
           <Progress value={pct} className="mt-3 h-2.5" aria-label="Plan progress" />
           <p className="mt-2 text-xs text-muted-foreground">
@@ -203,7 +203,7 @@ function PlanPage() {
                   {isCurrent && <Badge variant="soft">This week</Badge>}
                 </div>
                 <span className={cn("text-sm font-semibold", hours > plan.hours_per_week ? "text-warning-foreground" : "text-muted-foreground")}>
-                  {doneHours}/{hours} h · limit {plan.hours_per_week} h
+                  <span className="num">{doneHours}/{hours} h · limit {plan.hours_per_week} h</span>
                 </span>
               </div>
               <div className="mt-2 h-1.5 rounded-full bg-primary-soft">

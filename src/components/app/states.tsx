@@ -45,7 +45,7 @@ export function PageSkeleton() {
 
 export function EmptyState({ icon, title, description, action }: { icon?: ReactNode; title: string; description: string; action?: ReactNode }) {
   return (
-    <div className="surface-card grid-dots grid place-items-center gap-3 px-6 py-14 text-center">
+    <div className="surface-card grid place-items-center gap-3 px-6 py-14 text-center">
       {icon && <div className="grid size-11 place-items-center rounded-lg border bg-card text-primary shadow-card [&_svg]:size-5">{icon}</div>}
       <h2 className="text-base font-semibold">{title}</h2>
       <p className="max-w-md text-sm text-muted-foreground">{description}</p>

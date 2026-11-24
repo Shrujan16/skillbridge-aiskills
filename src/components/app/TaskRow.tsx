@@ -41,7 +41,7 @@ export function TaskRow({ task, userId, badge }: { task: RoadmapTask & { userTas
         <p className="mt-0.5 text-sm text-muted-foreground">{task.description}</p>
         <div className="mt-2 flex flex-wrap items-center gap-3 text-xs">
           <span className="inline-flex items-center gap-1 text-muted-foreground">
-            <Clock className="size-3.5" /> {Number(task.est_hours)} h
+            <Clock className="size-3.5" /> <span className="num">{Number(task.est_hours)} h</span>
           </span>
           <a href={task.resource_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 font-semibold text-primary hover:underline">
             Learn <ExternalLink className="size-3.5" />

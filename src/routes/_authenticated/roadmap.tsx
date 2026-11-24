@@ -38,7 +38,7 @@ function Roadmap() {
       <div className="mb-6 grid gap-3 sm:grid-cols-3">
         <div className="surface-card p-4 sm:col-span-1">
           <div className="flex items-center justify-between text-xs font-medium uppercase tracking-wider text-muted-foreground">
-            Progress <span className="font-display text-sm text-foreground">{pct}%</span>
+            Progress <span className="num text-sm text-foreground">{pct}%</span>
           </div>
           <Progress value={pct} className="mt-3 h-2.5" aria-label="Roadmap progress" />
           <p className="mt-2 text-xs text-muted-foreground">
@@ -54,7 +54,7 @@ function Roadmap() {
           const done = s.tasks.filter((t) => t.userTask?.status === "done").length;
           return (
             <li key={s.id} className="relative pl-12">
-              <span className="absolute left-0 top-4 grid size-10 place-items-center rounded-full border-4 border-background bg-primary font-display text-sm font-bold text-primary-foreground">
+              <span className="absolute left-0 top-4 grid size-10 place-items-center rounded-full border-4 border-background bg-primary font-mono text-sm font-semibold text-primary-foreground">
                 {i + 1}
               </span>
               <section className="surface-card p-4 sm:p-5">

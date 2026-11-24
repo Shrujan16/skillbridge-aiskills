@@ -114,7 +114,7 @@ function Assessment() {
                       active && "border-primary bg-primary-soft text-primary",
                     )}
                   >
-                    <span className={cn("grid size-7 shrink-0 place-items-center rounded-lg border font-display text-xs", active && "border-primary bg-primary text-primary-foreground")}>
+                    <span className={cn("grid size-7 shrink-0 place-items-center rounded-md border font-mono text-xs", active && "border-primary bg-primary text-primary-foreground")}>
                       {String.fromCharCode(65 + i)}
                     </span>
                     <code className="font-sans">{opt}</code>

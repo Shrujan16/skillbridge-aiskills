@@ -7,8 +7,10 @@
 - [x] Public profile /u/:username + copy share link
 - [x] Demo account with sample data
 - [x] Tests for scoring and planner rules
-- [ ] Developer-product redesign: slate tokens, Inter + JetBrains Mono, 8px radius, dark mode toggle
-- [ ] App shell: desktop sidebar, top bar (role + user menu), mobile bottom tabs
-- [ ] Landing: score formula section, architecture strip, tech badges
-- [ ] Dashboard: 4 stat tiles, sortable skill table, restyled chart, no emojis
-- [ ] Role selection: 3 cards, locked cards visible with lock, Coming soon, example skills, toast
+- [x] Developer-product redesign: slate tokens, Inter + JetBrains Mono, 8px radius, dark mode toggle
+- [x] App shell: desktop sidebar, top bar (role + user menu), mobile bottom tabs
+- [x] Landing: score formula section, architecture strip, tech badges
+- [x] Dashboard: 4 stat tiles, sortable skill table, restyled chart, no emojis
+- [x] Role selection: 3 cards, locked cards visible with lock, Coming soon, example skills, toast
+- [x] Favicon from the SkillBridge logo mark
+- [ ] Lovable badge hide request — blocked: paid-plan feature, workspace is on Free

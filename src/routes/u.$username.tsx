@@ -85,7 +85,7 @@ function PublicProfilePage() {
             <div className="flex items-center gap-4">
               <div className="grid size-20 place-items-center rounded-full" style={{ background: `conic-gradient(var(--primary) 0 ${readiness}%, var(--primary-soft) ${readiness}% 100%)` }}>
                 <div className="grid size-16 place-items-center rounded-full bg-card text-center">
-                  <span className="font-display text-lg font-bold leading-none">{profile.readiness === null ? "—" : `${readiness}%`}</span>
+                  <span className="num text-lg font-semibold leading-none">{profile.readiness === null ? "—" : `${readiness}%`}</span>
                 </div>
               </div>
               <div className="text-sm">
