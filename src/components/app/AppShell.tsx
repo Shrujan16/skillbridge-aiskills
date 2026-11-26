@@ -1,9 +1,10 @@
 import { Link, Outlet, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { CalendarDays, ChevronDown, ExternalLink, FolderGit2, LayoutDashboard, LogOut, Map, UserRound } from "lucide-react";
+import { BarChart3, CalendarDays, ChevronDown, ExternalLink, FolderGit2, LayoutDashboard, LogOut, Map, UserRound } from "lucide-react";
 import { Suspense } from "react";
 import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
+import { FeedbackDialog } from "./FeedbackDialog";
 import { PageSkeleton } from "./states";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -22,6 +23,7 @@ const NAV = [
   { to: "/roadmap", label: "Roadmap", icon: Map },
   { to: "/plan", label: "Plan", icon: CalendarDays },
   { to: "/projects", label: "Projects", icon: FolderGit2 },
+  { to: "/insights", label: "Insights", icon: BarChart3 },
   { to: "/profile", label: "Profile", icon: UserRound },
 ] as const;
 
@@ -51,8 +53,8 @@ export function AppShell() {
   }
 
   return (
-    <div className="min-h-screen md:pl-60">
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-60 flex-col border-r bg-sidebar md:flex">
+    <div className="min-h-screen md:pl-60 print:pl-0">
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-60 flex-col border-r bg-sidebar md:flex print:hidden">
         <div className="flex h-14 items-center border-b px-4">
           <Logo to="/dashboard" />
         </div>
@@ -80,7 +82,7 @@ export function AppShell() {
         )}
       </aside>
 
-      <header className="sticky top-0 z-20 border-b bg-card/85 backdrop-blur">
+      <header className="sticky top-0 z-20 border-b bg-card/85 backdrop-blur print:hidden">
         <div className="flex h-14 items-center justify-between gap-3 px-4 sm:px-6">
           <div className="flex min-w-0 items-center gap-3">
             <span className="md:hidden">
@@ -95,6 +97,7 @@ export function AppShell() {
             )}
           </div>
           <div className="flex items-center gap-1">
+            <FeedbackDialog />
             <ThemeToggle />
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center gap-2 rounded-md px-1.5 py-1 text-sm hover:bg-muted" aria-label="Account menu">
@@ -132,21 +135,21 @@ export function AppShell() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-4 pb-24 pt-6 sm:px-6 sm:pt-8 md:pb-12">
+      <main className="mx-auto max-w-6xl px-4 pb-24 pt-6 sm:px-6 sm:pt-8 md:pb-12 print:max-w-none print:p-0">
         <Suspense fallback={<PageSkeleton />}>
           <Outlet />
         </Suspense>
       </main>
 
       <nav
-        className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t bg-card/95 px-1 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
+        className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-6 border-t bg-card/95 px-1 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden print:hidden"
         aria-label="Main mobile"
       >
         {NAV.map((n) => (
           <Link
             key={n.to}
             to={n.to}
-            className="flex flex-col items-center gap-1 rounded-md py-2.5 text-[11px] font-medium text-muted-foreground"
+            className="flex min-h-11 min-w-0 flex-col items-center gap-1 rounded-md py-2.5 text-[10px] font-medium text-muted-foreground"
             activeProps={{ className: "text-primary" }}
           >
             <n.icon className="size-5" />

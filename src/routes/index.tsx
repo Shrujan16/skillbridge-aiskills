@@ -79,6 +79,7 @@ function HeroVisual() {
           <span className="size-2.5 rounded-full bg-border" />
           <span className="size-2.5 rounded-full bg-border" />
           <span className="ml-2 font-mono text-[11px] text-muted-foreground">skillbridge / dashboard</span>
+          <span className="ml-auto rounded border border-dashed px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">Sample preview</span>
         </div>
         <div className="p-5">
           <div className="flex items-center justify-between">
@@ -106,7 +107,7 @@ function HeroVisual() {
         </div>
       </div>
       <div className="surface-card absolute -bottom-5 -left-4 flex items-center gap-2 px-3 py-2 text-sm font-medium shadow-lift sm:-left-8">
-        <BadgeCheck className="size-4 text-success" /> CSS verified on GitHub
+        <BadgeCheck className="size-4 text-success" /> CSS verified on GitHub <span className="text-[10px] font-normal text-muted-foreground">(example)</span>
       </div>
     </div>
   );

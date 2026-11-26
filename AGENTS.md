@@ -38,3 +38,4 @@ use the editor.
 - The demo account is created/seeded on demand by the public `ensureDemoAccount` server function, which only touches the fixed demo user — auth users can't be seeded from migrations.
 - GitHub calls are unauthenticated by default; an optional `GITHUB_TOKEN` secret raises the rate limit.
 - Dark mode is a `dark` class on `<html>`, saved under the `sb-theme` localStorage key and applied by a pre-paint script in `__root.tsx`; components use semantic tokens only — avoids a light flash and keeps both themes in one palette.
+- Cohort insights come only from the `get_cohort_insights` SECURITY DEFINER function (aggregates, min 5 students) — no individual rows exposed.

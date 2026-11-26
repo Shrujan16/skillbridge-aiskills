@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { BadgeCheck, ExternalLink, Flame, ListChecks, Loader2 } from "lucide-react";
+import { BadgeCheck, ExternalLink, FileDown, Flame, ListChecks, Loader2 } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import { ShareButton } from "@/components/app/ShareButton";
@@ -56,7 +56,7 @@ function ProfilePage() {
 
   return (
     <>
-      <PageHeader title="Profile" description={data.user.email} action={<ShareButton username={profile.username} />} />
+      <PageHeader title="Profile" description={data.user.email} action={<><Button asChild variant="outline" className="min-h-11"><Link to="/report"><FileDown /> Download skill report</Link></Button><ShareButton username={profile.username} /></>} />
       <div className="grid gap-4 lg:grid-cols-[1.2fr_1fr]">
         <form onSubmit={save} noValidate className="surface-card space-y-4 p-5 sm:p-6">
           <h2 className="text-lg font-bold">Your details</h2>

@@ -46,6 +46,33 @@ export type Database = {
           },
         ]
       }
+      feedback: {
+        Row: {
+          comment: string | null
+          created_at: string
+          helpful: string
+          id: string
+          rating: number
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          helpful: string
+          id?: string
+          rating: number
+          user_id?: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          helpful?: string
+          id?: string
+          rating?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       plans: {
         Row: {
           estimated_finish: string | null
@@ -369,6 +396,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_cohort_insights: { Args: { _role_id?: number }; Returns: Json }
       get_public_profile: { Args: { _username: string }; Returns: Json }
     }
     Enums: {

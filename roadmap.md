@@ -14,3 +14,5 @@
 - [x] Role selection: 3 cards, locked cards visible with lock, Coming soon, example skills, toast
 - [x] Favicon from the SkillBridge logo mark
 - [ ] Lovable badge hide request — blocked: paid-plan feature, workspace is on Free
+
+- [x] Insights page, skill report, feedback widget, sample-preview label
